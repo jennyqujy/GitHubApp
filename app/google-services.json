@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "887969595186",
+    "firebase_url": "https://github-app-8e9be.firebaseio.com",
+    "project_id": "github-app-8e9be",
+    "storage_bucket": "github-app-8e9be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887969595186:android:278cb9dd5ab09f4a",
+        "android_client_info": {
+          "package_name": "com.jenny.github"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "887969595186-3qu4v2ofup6hf9s5g5den1paf3jhb8eb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhXWJXep-zAqImYMXV2gQqoJp83pIkxRg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
