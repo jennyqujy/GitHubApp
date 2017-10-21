@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,8 +25,11 @@ import com.jenny.github.API.GetUserPhoto;
 import com.jenny.github.API.GetUserTask;
 import com.jenny.github.Models.User;
 import com.jenny.github.R;
+import com.jenny.github.fragment.RecyclerViewFragment;
 
 import java.io.IOException;
+
+import butterknife.ButterKnife;
 
 import static com.jenny.github.Utils.HeaderLogoUtils.galaxyImageURL;
 import static com.jenny.github.Utils.ProfilePhotoUtils.getCroppedBitmap;
@@ -36,11 +41,59 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        MaterialViewPager mViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
+        /**
+         * Todo: Refactor this viewPager part to a new activity and link with the main activity.
+         */
+        final MaterialViewPager mViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
         mViewPager.setImageUrl(galaxyImageURL, 0);
+        ButterKnife.bind(this);
+
+        //set tool bar text color and support actions.
+        final Toolbar toolbar = mViewPager.getToolbar();
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+        toolbar.setTitleTextColor(Color.WHITE);
+
+
+        mViewPager.getViewPager().setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+
+            @Override
+            public Fragment getItem(int position) {
+                switch (position % 5) {
+                    default:
+                        return RecyclerViewFragment.newInstance();
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 5;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                switch (position % 5) {
+                    case 0:
+                        return "Overview";
+                    case 1:
+                        return "Repositories";
+                    case 2:
+                        return "Stars";
+                    case 3:
+                        return "Followers";
+                    case 4:
+                        return "Following";
+                }
+                return "";
+            }
+        });
+
+        mViewPager.getViewPager().setOffscreenPageLimit(mViewPager.getViewPager().getAdapter().getCount());
+        mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
+        mViewPager.getPagerTitleStrip().setTextColor(Color.WHITE);
+        mViewPager.getPagerTitleStrip().setShouldExpand(true);
 
         /**
          * TODO: Refactor this floating button fab into a Login Activity
@@ -87,8 +140,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
-        bar.setTitleTextColor(Color.WHITE);
     }
 
 
@@ -130,7 +181,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_overview) {
-            // Handle the camera action
+            //set up page for profile overview:
+
+
         } else if (id == R.id.nav_stars) {
 
         } else if (id==R.id.nav_repository){

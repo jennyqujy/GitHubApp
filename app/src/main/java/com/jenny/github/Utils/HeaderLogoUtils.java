@@ -5,5 +5,5 @@ package com.jenny.github.Utils;
  */
 
 public class HeaderLogoUtils {
-    public final static String galaxyImageURL = "https://tctechcrunch2011.files.wordpress.com/2014/02/galaxy.jpg";
+    public final static String galaxyImageURL = "https://newevolutiondesigns.com/images/freebies/galaxy-wallpaper-36.jpg";
 }
