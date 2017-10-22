@@ -19,19 +19,11 @@ import java.net.URL;
 
 public class GetUserPhoto extends AsyncTask<String, Void, Bitmap> {
 
-//    private String url;
-//    private ImageView imageView;
-
     private final GetPhotoInterface callback;
 
     public GetUserPhoto(GetPhotoInterface callback) {
         this.callback = callback;
     }
-
-//    public GetUserPhoto(String url, ImageView imageView) {
-//        this.url = url;
-//        this.imageView = imageView;
-//    }
 
     @Override
     protected Bitmap doInBackground(String... strings) {

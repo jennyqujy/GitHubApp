@@ -183,7 +183,6 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_overview) {
             //set up page for profile overview:
 
-
         } else if (id == R.id.nav_stars) {
 
         } else if (id==R.id.nav_repository){
