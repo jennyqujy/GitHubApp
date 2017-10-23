@@ -8,7 +8,6 @@ import com.jenny.github.Models.User;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -26,7 +25,7 @@ public class GetUserTask extends AsyncTask<String, Void, User> {
     @Override
     protected User doInBackground(String... strings) {
         try {
-            URL url = new URL("https://api.github.com/users/" + strings[0] + "?access_token=3f5e86e7831ccec9a07b0603e4f978c19821f865");
+            URL url = APIUtil.getEndpoint("/users/" + strings[0]);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -42,8 +41,6 @@ public class GetUserTask extends AsyncTask<String, Void, User> {
             reader.endObject();
             conn.disconnect();
             return user;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
