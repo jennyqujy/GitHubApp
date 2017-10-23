@@ -13,6 +13,9 @@ public class User {
     private String name;
     private String bio;
     private String avatorUrl;
+    private String followers;
+    private String following;
+    private String repos;
 
     public User(JsonReader reader) throws IOException {
         while (reader.hasNext()) {
@@ -23,16 +26,58 @@ public class User {
                 this.name = reader.nextString();
             } else if (key.equals("avatar_url") && reader.peek() != JsonToken.NULL) {
                 this.avatorUrl = reader.nextString();
+            } else if (key.equals("followers") && reader.peek() != JsonToken.NULL) {
+                this.followers = reader.nextString();
+            } else if (key.equals("following") && reader.peek() != JsonToken.NULL) {
+                this.following = reader.nextString();
+            } else if (key.equals("public_repos") && reader.peek() != JsonToken.NULL) {
+                this.repos = reader.nextString();
             } else {
                 reader.skipValue();
             }
         }
     }
 
-    public User(String name, String bio, String avatorUrl){
+    public User(String name, String bio, String avatorUrl, String followers, String following, String repos){
         this.name = name;
         this.bio = bio;
         this.avatorUrl = avatorUrl;
+        this.followers = followers;
+        this.following = following;
+        this.repos = repos;
+    }
+
+    public User(){
+        this.name = "";
+        this.bio = "";
+        this.avatorUrl = "";
+        this.followers = "";
+        this.following = "";
+        this.repos = "";
+    }
+
+    public String getFollowers() {
+        return followers;
+    }
+
+    public String getFollowing() {
+        return following;
+    }
+
+    public String getRepos() {
+        return repos;
+    }
+
+    public void setFollowers(String followers) {
+        this.followers = followers;
+    }
+
+    public void setFollowing(String following) {
+        this.following = following;
+    }
+
+    public void setRepos(String repos) {
+        this.repos = repos;
     }
 
     public void setName(String name) {

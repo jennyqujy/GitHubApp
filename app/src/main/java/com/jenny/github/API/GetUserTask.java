@@ -26,7 +26,7 @@ public class GetUserTask extends AsyncTask<String, Void, User> {
     @Override
     protected User doInBackground(String... strings) {
         try {
-            URL url = new URL("https://api.github.com/users/" + strings[0]);
+            URL url = new URL("https://api.github.com/users/" + strings[0] + "?access_token=3f5e86e7831ccec9a07b0603e4f978c19821f865");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");

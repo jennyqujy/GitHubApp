@@ -23,13 +23,15 @@ import com.jenny.github.API.GetUserPhoto;
 import com.jenny.github.API.GetUserTask;
 import com.jenny.github.Models.User;
 import com.jenny.github.R;
+import com.jenny.github.fragment.ProfileOverviewFragment;
 import com.jenny.github.fragment.RecyclerViewFragment;
 
 import java.io.IOException;
 
 import butterknife.ButterKnife;
 
-import static com.jenny.github.Utils.HeaderLogoUtils.galaxyImageURL;
+import static com.jenny.github.Const.GitUserName.user1;
+import static com.jenny.github.Const.HeaderImage.galaxyImageURL;
 import static com.jenny.github.Utils.ProfilePhotoUtils.getCroppedBitmap;
 
 public class MainActivity extends AppCompatActivity
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public Fragment getItem(int position) {
                 switch (position % 5) {
+                    case 0:
+                        return ProfileOverviewFragment.newInstance();
                     case 1:
                         return RecyclerViewFragment.newInstance();
                 }
@@ -95,40 +99,40 @@ public class MainActivity extends AppCompatActivity
         mViewPager.getPagerTitleStrip().setTextColor(Color.WHITE);
 
         /**
-         * TODO: Refactor this floating button fab into a Login Activity
+         * TODO: Refactor this floating button fab into some Activity
          */
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //              startAcitivity(new Intent(MainActivity.this, LoginActivity.class));
+//    }
 
-                /**
-                 * Opening a new thread to set user tab including profile picture, name and email.
-                 */
-                new GetUserTask(new GetUserInterface() {
-                    @Override
-                    public void onFinished(User user) throws IOException {
+        /**
+         * Opening a new thread to set user tab including profile picture, name and email.
+         */
+        new GetUserTask(new GetUserInterface() {
+            @Override
+            public void onFinished(User user) throws IOException {
 
-                    new GetUserPhoto(new GetPhotoInterface() {
-                        @Override
-                        public void onFinished(Bitmap result) throws IOException {
-                        ImageView imageView = (ImageView) findViewById(R.id.imageView);
-                        ImageView headerLogoView = (ImageView) findViewById(R.id.logoImageView);
-                        imageView.setImageBitmap(getCroppedBitmap(result));
-                        headerLogoView.setImageBitmap(getCroppedBitmap(result));
-                        }
-                    }).execute(user.getAvatorUrl());
+            new GetUserPhoto(new GetPhotoInterface() {
+                @Override
+                public void onFinished(Bitmap result) throws IOException {
+                ImageView imageView = (ImageView) findViewById(R.id.imageView);
+                ImageView headerLogoView = (ImageView) findViewById(R.id.logoImageView);
+                imageView.setImageBitmap(getCroppedBitmap(result));
+                headerLogoView.setImageBitmap(getCroppedBitmap(result));
+                }
+            }).execute(user.getAvatorUrl());
 
-                    TextView userName = (TextView) findViewById(R.id.textViewName);
-                    userName.setText(user.getName());
-                    TextView userBio = (TextView) findViewById(R.id.textViewBio);
-                    userBio.setText(user.getBio());
+            TextView userName = (TextView) findViewById(R.id.textViewName);
+            userName.setText(user.getName());
+            TextView userBio = (TextView) findViewById(R.id.textViewBio);
+            userBio.setText(user.getBio());
 
-                    }
-                }).execute("yu-w");
-//            }
-//        });
+            }
+        }).execute(user1);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
