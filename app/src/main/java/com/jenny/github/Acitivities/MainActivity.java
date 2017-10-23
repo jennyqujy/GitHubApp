@@ -3,7 +3,6 @@ package com.jenny.github.Acitivities;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -14,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -62,9 +60,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public Fragment getItem(int position) {
                 switch (position % 5) {
-                    default:
+                    case 1:
                         return RecyclerViewFragment.newInstance();
                 }
+                return new Fragment();
             }
 
             @Override
@@ -91,17 +90,17 @@ public class MainActivity extends AppCompatActivity
         });
 
         mViewPager.getViewPager().setOffscreenPageLimit(mViewPager.getViewPager().getAdapter().getCount());
+        mViewPager.getPagerTitleStrip().setShouldExpand(true);
         mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
         mViewPager.getPagerTitleStrip().setTextColor(Color.WHITE);
-        mViewPager.getPagerTitleStrip().setShouldExpand(true);
 
         /**
          * TODO: Refactor this floating button fab into a Login Activity
          */
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //              startAcitivity(new Intent(MainActivity.this, LoginActivity.class));
 
                 /**
@@ -127,9 +126,9 @@ public class MainActivity extends AppCompatActivity
                     userBio.setText(user.getBio());
 
                     }
-                }).execute("jennyqujy");
-            }
-        });
+                }).execute("yu-w");
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
