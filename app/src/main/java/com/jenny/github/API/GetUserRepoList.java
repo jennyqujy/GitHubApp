@@ -22,11 +22,11 @@ import java.util.List;
  * Created by Jenny on 10/21/17.
  */
 
-public class GetUserFollowingList extends AsyncTask<String, Void, List<Repo>> {
+public class GetUserRepoList extends AsyncTask<String, Void, List<Repo>> {
 
     private final GetRepoListInterface callback;
 
-    public GetUserFollowingList(GetRepoListInterface callback) {
+    public GetUserRepoList(GetRepoListInterface callback) {
         this.callback = callback;
     }
 

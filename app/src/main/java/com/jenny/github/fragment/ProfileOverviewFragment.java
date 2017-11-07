@@ -30,37 +30,31 @@ import static com.jenny.github.Const.GitUserName.user1;
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * to handle interaction events.
- * Use the {@link FollowingViewFragment#newInstance} factory method to
+ * Use the {@link ProfileOverviewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FollowingViewFragment extends Fragment {
-    /**
-     * A simple {@link Fragment} subclass.
-     * Activities that contain this fragment must implement the
-     * to handle interaction events.
-     * Use the {@link com.jenny.github.fragment.ProfileOverviewFragment#newInstance} factory method to
-     * create an instance of this fragment.
-     */
+public class ProfileOverviewFragment extends Fragment {
+
     private static final boolean GRID_LAYOUT = false;
 
-    @BindView(R.id.following_view)
+    @BindView(R.id.profile_overview)
     RecyclerView mRecyclerView;
 
-    public static com.jenny.github.fragment.ProfileOverviewFragment newInstance() {
-        com.jenny.github.fragment.ProfileOverviewFragment fragment = new com.jenny.github.fragment.ProfileOverviewFragment();
+    public static ProfileOverviewFragment newInstance() {
+        ProfileOverviewFragment fragment = new ProfileOverviewFragment();
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_following_view, container, false);
+        return inflater.inflate(R.layout.fragment_profile_overview, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        final List<User> users = new ArrayList<>();
+        final List<User> user = new ArrayList<>();
 
         if (GRID_LAYOUT) {
             mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
@@ -70,22 +64,23 @@ public class FollowingViewFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
 
         mRecyclerView.addItemDecoration(new MaterialViewPagerHeaderDecorator());
-        mRecyclerView.setAdapter(new ProfileOverviewAdapter(users));
+        mRecyclerView.setAdapter(new ProfileOverviewAdapter(user));
         new GetUserTask(new GetUserInterface() {
             @Override
             public void onFinished(final User user2) throws IOException {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        users.add(user2);
-                        mRecyclerView.getAdapter().notifyDataSetChanged();
-                        getView().invalidate();
-                        mRecyclerView.removeAllViews();
-                        mRecyclerView.invalidate();
-                    }
-                });
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    user.add(user2);
+                    mRecyclerView.getAdapter().notifyDataSetChanged();
+                    getView().invalidate();
+                    mRecyclerView.removeAllViews();
+                    mRecyclerView.invalidate();
+                }
+            });
             }
         }).execute(user1);
+
     }
 }
 

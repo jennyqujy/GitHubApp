@@ -2,8 +2,6 @@ package com.jenny.github.API;
 
 import android.os.AsyncTask;
 
-import com.jenny.github.Models.Repo;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,21 +17,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jenny on 10/21/17.
+ * Created by Jenny on 11/6/17.
  */
 
-public class GetUserFollowingList extends AsyncTask<String, Void, List<Repo>> {
+public class GetSearched extends AsyncTask<String, Void, List<String>> {
 
-    private final GetRepoListInterface callback;
+    private final GetSearchedInterface callback;
 
-    public GetUserFollowingList(GetRepoListInterface callback) {
+    public GetSearched(GetSearchedInterface callback) {
         this.callback = callback;
     }
 
     @Override
-    protected List<Repo> doInBackground(String... strings) {
+    protected List<String> doInBackground(String... strings) {
         try {
-            URL url = APIUtil.getEndpoint("/users/" + strings[0] + "/repos");
+            boolean isUser = strings[1] == "user";
+            URL url = APIUtil.getSearchUrl(strings[0], isUser);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -50,14 +49,20 @@ public class GetUserFollowingList extends AsyncTask<String, Void, List<Repo>> {
             while ((line = r.readLine()) != null) {
                 total.append(line).append('\n');
             }
-            JSONArray repoJsonList = new JSONArray(total.toString());
-            List<Repo> repoList = new ArrayList<>();
-            for (int i=0;i<repoJsonList.length();i++){
-                JSONObject repo = repoJsonList.getJSONObject(i);
-                repoList.add(new Repo(repo));
+            JSONObject searchResult = new JSONObject(total.toString());
+            JSONArray JsonList = searchResult.getJSONArray("items");
+            List<String> list = new ArrayList<>();
+            for (int i=0;i<JsonList.length();i++){
+                JSONObject object = JsonList.getJSONObject(i);
+                if (object.has("login")) {
+                    list.add(object.getString("login"));
+                }
+                else if (object.has("full_name")){
+                    list.add(object.getString("full_name"));
+                }
             }
             conn.disconnect();
-            return repoList;
+            return list;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -69,14 +74,15 @@ public class GetUserFollowingList extends AsyncTask<String, Void, List<Repo>> {
     }
 
     @Override
-    protected void onPostExecute(List<Repo> repoList) {
-        super.onPostExecute(repoList);
-        if (repoList != null) {
+    protected void onPostExecute(List<String> userList) {
+        super.onPostExecute(userList);
+        if (userList != null) {
             try {
-                callback.onFinished(repoList);
+                callback.onFinished(userList);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 }
+

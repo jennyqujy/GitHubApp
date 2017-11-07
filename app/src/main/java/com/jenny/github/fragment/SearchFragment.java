@@ -11,11 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator;
-import com.jenny.github.API.GetUserInterface;
-import com.jenny.github.API.GetUserTask;
-import com.jenny.github.Models.User;
+import com.jenny.github.API.GetSearched;
+import com.jenny.github.API.GetSearchedInterface;
 import com.jenny.github.R;
-import com.jenny.github.Views.ProfileOverviewAdapter;
+import com.jenny.github.Views.SearchListViewAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,43 +23,30 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.jenny.github.Const.GitUserName.user1;
-
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link FollowingViewFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Created by Jenny on 11/6/17.
  */
-public class FollowingViewFragment extends Fragment {
-    /**
-     * A simple {@link Fragment} subclass.
-     * Activities that contain this fragment must implement the
-     * to handle interaction events.
-     * Use the {@link com.jenny.github.fragment.ProfileOverviewFragment#newInstance} factory method to
-     * create an instance of this fragment.
-     */
+
+public class SearchFragment extends Fragment {
+
     private static final boolean GRID_LAYOUT = false;
 
-    @BindView(R.id.following_view)
+    @BindView(R.id.searchView)
     RecyclerView mRecyclerView;
 
-    public static com.jenny.github.fragment.ProfileOverviewFragment newInstance() {
-        com.jenny.github.fragment.ProfileOverviewFragment fragment = new com.jenny.github.fragment.ProfileOverviewFragment();
-        return fragment;
+    public static com.jenny.github.fragment.RecyclerViewFragment newInstance() {
+        return new com.jenny.github.fragment.RecyclerViewFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_following_view, container, false);
+        return inflater.inflate(R.layout.fragment_search, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        final List<User> users = new ArrayList<>();
 
         if (GRID_LAYOUT) {
             mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
@@ -69,15 +55,21 @@ public class FollowingViewFragment extends Fragment {
         }
         mRecyclerView.setHasFixedSize(true);
 
+        //Use this now
         mRecyclerView.addItemDecoration(new MaterialViewPagerHeaderDecorator());
-        mRecyclerView.setAdapter(new ProfileOverviewAdapter(users));
-        new GetUserTask(new GetUserInterface() {
+    }
+
+    public void doSearch(String query, String user) {
+        final List<String> items = new ArrayList<>();
+        mRecyclerView.setAdapter(new SearchListViewAdapter(items));
+        new GetSearched(new GetSearchedInterface() {
             @Override
-            public void onFinished(final User user2) throws IOException {
+            public void onFinished(final List<String> result) throws IOException {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        users.add(user2);
+                        items.clear();
+                        items.addAll(result);
                         mRecyclerView.getAdapter().notifyDataSetChanged();
                         getView().invalidate();
                         mRecyclerView.removeAllViews();
@@ -85,7 +77,8 @@ public class FollowingViewFragment extends Fragment {
                     }
                 });
             }
-        }).execute(user1);
+        }).execute(query, user);
     }
+
 }
 

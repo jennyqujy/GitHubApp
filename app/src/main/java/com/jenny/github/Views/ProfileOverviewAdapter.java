@@ -15,12 +15,12 @@ import java.util.List;
  * Created by Jenny on 10/23/17.
  */
 
-public class FollowingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ProfileOverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<User> users;
 
     static final int TYPE_HEADER = 0;
 
-    public FollowingViewAdapter(List<User> user) {
+    public ProfileOverviewAdapter(List<User> user) {
         this.users = user;
     }
 
@@ -40,7 +40,7 @@ public class FollowingViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.following_list_item_card_small, parent, false);
+                .inflate(R.layout.list_item_card_big, parent, false);
         return new RecyclerView.ViewHolder(view){};
     }
 
@@ -48,12 +48,18 @@ public class FollowingViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         final View view = holder.itemView;
-        TextView nameTextView = view.findViewById(R.id.following_name);
-        TextView bioTextView = view.findViewById(R.id.following_bio);
+        TextView nameTextView = view.findViewById(R.id.user_name);
+        TextView bioTextView = view.findViewById(R.id.user_bio);
+        TextView followerTextView = view.findViewById(R.id.user_follower);
+        TextView followingTextView = view.findViewById(R.id.user_following);
+        TextView repoTextView = view.findViewById(R.id.user_repo);
         if (!users.isEmpty()) {
             final User user = users.get(0);
             nameTextView.setText(user.getName());
             bioTextView.setText(user.getBio());
+            followerTextView.setText(user.getFollowers());
+            followingTextView.setText(user.getFollowing());
+            repoTextView.setText(user.getRepos());
         }
     }
 }
