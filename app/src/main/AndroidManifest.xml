@@ -39,6 +39,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Acitivities.TabPagerActivity" />
+        <activity android:name=".Acitivities.SearchActivity"></activity>
     </application>
 
 </manifest>

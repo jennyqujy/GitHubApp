@@ -10,5 +10,6 @@
 
     <dimen name="cardMarginHorizontal">10dp</dimen>
     <dimen name="cardMarginVertical">8dp</dimen>
+    <dimen name="searchTextBar">40dp</dimen>
 
 </resources>
